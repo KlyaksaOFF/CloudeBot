@@ -38,16 +38,10 @@ class MyCommands(commands.Component):
             f"Столбы - (94.29.33.162:25567)"
         )
 
-    @commands.group(name="socials", invoke_fallback=True)
-    async def socials_group(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter} Все соцсети: https://t.me/pingvinius_228")
+    @commands.command(aliases=["tg", "тг", "тгк", "telegram"])
+    async def telegram(self, ctx: commands.Context) -> None:
+        await ctx.reply(f"{ctx.chatter}, https://t.me/pingvinius_228")
 
-    @socials_group.command(name="telegram", aliases=[
-        "tg", "тг", "телеграм", "telega", "телега"
-    ])
-    async def social_telegram(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter} ТГК: https://t.me/pingvinius_228")
-
-    @socials_group.command(name="discord", aliases=["дискорд", "дс"])
-    async def social_discord(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter} Discord: https://discord.gg/WxSbxHXVsB")
+    @commands.command(aliases=["дс", "disco", "дискорд"])
+    async def discord(self, ctx: commands.Context) -> None:
+        await ctx.reply(f"{ctx.chatter}, https://discord.gg/pqZ7BSEhJj")
