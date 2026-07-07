@@ -22,10 +22,10 @@ class MyCommands(commands.Component):
     async def welcome(self, ctx: commands.Context) -> None:
         await ctx.reply(f"Привет {ctx.chatter}!")
 
-    @commands.command()
+    @commands.command(aliases=["random", "рандом"])
     async def random(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} {random.randint(0, 100)}!")
 
-    @commands.command(aliases=["Тг", "TG", "ТГК"])
+    @commands.command(aliases=["тг", "tg", "тгк"])
     async def telegram(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} ТГК: https://t.me/pingvinius_228")
