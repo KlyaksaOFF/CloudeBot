@@ -30,6 +30,14 @@ class MyCommands(commands.Component):
     async def donate(self, ctx: commands.Context) -> None:
         await ctx.reply("https://donatex.gg/donate/pingvinius")
 
+    @commands.command(aliases=["server", "сервер", "айпи"])
+    async def ip(self, ctx: commands.Context) -> None:
+        await ctx.reply(
+            f"{ctx.chatter}, наши сервера:\n"
+            f"Выживание - (94.29.33.162:25566)\n"
+            f"Столбы - (94.29.33.162:25567)"
+        )
+
     @commands.group(name="socials", invoke_fallback=True)
     async def socials_group(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} Все соцсети: https://t.me/pingvinius_228")
@@ -40,6 +48,6 @@ class MyCommands(commands.Component):
     async def social_telegram(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} ТГК: https://t.me/pingvinius_228")
 
-    @socials_group.command(name="discord", aliases=["discord", "дискорд", "дс"])
+    @socials_group.command(name="discord", aliases=["дискорд", "дс"])
     async def social_discord(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} Discord: https://discord.gg/WxSbxHXVsB")
