@@ -1,8 +1,8 @@
+import random
 from typing import TYPE_CHECKING
 
 import twitchio
 from twitchio.ext import commands
-import random
 
 if TYPE_CHECKING:
     from .bot import Bot
@@ -15,7 +15,8 @@ class MyCommands(commands.Component):
 
     @commands.Component.listener()
     async def event_message(self, payload: twitchio.ChatMessage) -> None:
-        print(f"[{payload.broadcaster.name}] - {payload.chatter.name}: {payload.text}")
+        print(f"[{payload.broadcaster.name}] - {payload.chatter.name}: "
+              f"{payload.text}")
 
     @commands.command(aliases=["привет", "hi"])
     async def welcome(self, ctx: commands.Context) -> None:

@@ -26,5 +26,6 @@ def main() -> None:
     except KeyboardInterrupt:
         LOGGER.warning("Shutting down due to KeyboardInterrupt")
 
+
 if __name__ == "__main__":
     main()
