@@ -31,6 +31,7 @@ class Bot(commands.AutoBot):
             prefix="!",
             subscriptions=subs,
             force_subscribe=True,
+            case_insensitive=True,
         )
 
     async def setup_hook(self) -> None:
@@ -42,7 +43,7 @@ class Bot(commands.AutoBot):
         if not payload.user_id:
             return
 
-        # A list of subscriptions we would like to make to the newly authorized channel...
+        # Список подписок, которые мы хотели бы оформить на недавно авторизованный канал
         subs: list[eventsub.SubscriptionPayload] = [
             eventsub.ChatMessageSubscription(broadcaster_user_id=payload.user_id, user_id=self.bot_id),
         ]
@@ -71,3 +72,22 @@ class Bot(commands.AutoBot):
 
     async def event_ready(self) -> None:
         LOGGER.info("Successfully logged in as: %s", self.bot_id)
+
+    async def event_command_error(
+        self,
+        payload: commands.CommandErrorPayload,
+    ) -> None:
+        ctx = payload.context
+        error = payload.exception
+
+        if isinstance(error, commands.CommandNotFound):
+            await ctx.reply(
+                f'Команда "{ctx.invoked_with}" не найдена.'
+            )
+            return
+
+        LOGGER.error(
+            'Ошибка при выполнении команды "%s":',
+            ctx.command,
+            exc_info=error,
+        )

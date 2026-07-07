@@ -17,10 +17,14 @@ class MyCommands(commands.Component):
     async def event_message(self, payload: twitchio.ChatMessage) -> None:
         print(f"[{payload.broadcaster.name}] - {payload.chatter.name}: {payload.text}")
 
-    @commands.command()
-    async def hi(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"Hi {ctx.chatter}!")
+    @commands.command(aliases=["привет", "hi"])
+    async def welcome(self, ctx: commands.Context) -> None:
+        await ctx.reply(f"Привет {ctx.chatter}!")
 
     @commands.command()
     async def random(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} {random.randint(0, 100)}!")
+
+    @commands.command(aliases=["Тг", "TG", "ТГК"])
+    async def telegram(self, ctx: commands.Context) -> None:
+        await ctx.reply(f"{ctx.chatter} ТГК: https://t.me/pingvinius_228")
