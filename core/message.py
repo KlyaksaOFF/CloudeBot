@@ -38,7 +38,7 @@ class MyCommands(commands.Component):
             f"Столбы - (94.29.33.162:25567)"
         )
 
-    @commands.command(aliases=["tg", "тг", "тгк", "telegram"])
+    @commands.command(aliases=["tg", "тг", "тгк", "телеграм"])
     async def telegram(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter}, https://t.me/pingvinius_228")
 
