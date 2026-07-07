@@ -22,7 +22,7 @@ class MyCommands(commands.Component):
     async def welcome(self, ctx: commands.Context) -> None:
         await ctx.reply(f"Привет {ctx.chatter}!")
 
-    @commands.command(aliases=["random", "рандом"])
+    @commands.command(aliases=["рандом"])
     async def random(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} {random.randint(0, 100)}!")
 
