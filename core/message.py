@@ -1,7 +1,7 @@
 import random
 from typing import TYPE_CHECKING
+
 import twitchio
-from twitchio import eventsub
 from twitchio.ext import commands
 
 if TYPE_CHECKING:
@@ -28,22 +28,21 @@ class MyCommands(commands.Component):
 
     @commands.command(aliases=["донат", "donats", "донаты", "donat"])
     async def donate(self, ctx: commands.Context) -> None:
-        await ctx.reply("https://donatex.gg/donate/pingvinius")
+        await ctx.reply("donatex.gg/donate/pingvinius")
 
     @commands.command(aliases=["server", "сервер", "айпи"])
     async def ip(self, ctx: commands.Context) -> None:
         await ctx.reply(
             f"{ctx.chatter}, наши сервера:\n"
             f"Выживание - (94.29.33.162:25566)\n"
-            f"Столбы - (94.29.33.162:25567)"
-        )
+            f"Столбы - (94.29.33.162:25567)")
 
     @commands.command(aliases=["tg", "тг", "тгк", "телеграм"])
     async def telegram(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter}, https://t.me/pingvinius_228")
+        await ctx.reply(f"{ctx.chatter}, t.me/cloudertw")
 
     @commands.command(aliases=["дс", "disco", "дискорд"])
     async def discord(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter}, https://discord.gg/pqZ7BSEhJj")
+        await ctx.reply(f"{ctx.chatter}, discord.gg/pqZ7BSEhJj")
 
 

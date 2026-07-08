@@ -61,6 +61,12 @@ class Bot(commands.AutoBot):
                 broadcaster_user_id=payload.user_id,
                 moderator_user_id=self.bot_id,
             ),
+            eventsub.StreamOnlineSubscription(
+                broadcaster_user_id=payload.user_id,
+            ),
+            eventsub.StreamOfflineSubscription(
+                broadcaster_user_id=payload.user_id,
+            ),
         ]
 
         resp: twitchio.MultiSubscribePayload = await self.multi_subscribe(subs)
@@ -124,6 +130,37 @@ class Bot(commands.AutoBot):
 
             await channel.send_message(
                 f"Привет, @{follower_name} спасибо за фоллоу! 🎉",
+                sender=self.user,  # self.user
+            )
+        except Exception as e:
+            print(f"Не удалось отправить сообщение в чат: {e}")
+
+    async def event_stream_online(self, payload: twitchio.StreamOnline) -> None:
+        channel_name = payload.broadcaster.name
+        started_at = payload.started_at
+
+        print(f"Стрим онлайн!")
+
+        try:
+            channel = self.create_partialuser(user_id=self.owner_id)
+
+            await channel.send_message(
+                f"{channel_name} запустил стрим, время запуска: ({started_at}).",
+                sender=self.user,  # self.user
+            )
+        except Exception as e:
+            print(f"Не удалось отправить сообщение в чат: {e}")
+
+    async def event_stream_offline(self, payload: twitchio.StreamOffline) -> None:
+        channel_name = payload.broadcaster.name
+
+        print(f"Стрим оффлайн!")
+
+        try:
+            channel = self.create_partialuser(user_id=self.owner_id)
+
+            await channel.send_message(
+                f"{channel_name} оффлайн, все новости в нашем тгк: t.me/cloudertw",
                 sender=self.user,  # self.user
             )
         except Exception as e:
