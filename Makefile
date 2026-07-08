@@ -4,5 +4,5 @@ lint:
 lint-fix:
 	uv run ruff check --fix
 
-bot-start:
+start:
 	uv run start.py

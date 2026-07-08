@@ -57,6 +57,10 @@ class Bot(commands.AutoBot):
             eventsub.ChatMessageSubscription(
                 broadcaster_user_id=payload.user_id,
                 user_id=self.bot_id),
+            eventsub.ChannelFollowSubscription(
+                broadcaster_user_id=payload.user_id,
+                moderator_user_id=self.bot_id,
+            ),
         ]
 
         resp: twitchio.MultiSubscribePayload = await self.multi_subscribe(subs)
@@ -106,3 +110,21 @@ class Bot(commands.AutoBot):
             ctx.command,
             exc_info=error,
         )
+
+    async def event_follow(self, payload: twitchio.ChannelFollow) -> None:
+        follower_name = payload.user.name
+        channel_name = payload.broadcaster.name
+
+        # Печатаем лог в консоль бота
+        print(f"[ФОЛЛОУ] Пользователь {follower_name} подписался на канал {channel_name}!")
+
+        # Отправляем приветственное сообщение обратно в чат стримера
+        try:
+            channel = self.create_partialuser(user_id=self.owner_id)
+
+            await channel.send_message(
+                f"Привет, @{follower_name} спасибо за фоллоу! 🎉",
+                sender=self.user,  # self.user
+            )
+        except Exception as e:
+            print(f"Не удалось отправить сообщение в чат: {e}")

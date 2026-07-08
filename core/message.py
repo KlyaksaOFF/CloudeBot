@@ -1,7 +1,7 @@
 import random
 from typing import TYPE_CHECKING
-
 import twitchio
+from twitchio import eventsub
 from twitchio.ext import commands
 
 if TYPE_CHECKING:
@@ -45,3 +45,5 @@ class MyCommands(commands.Component):
     @commands.command(aliases=["дс", "disco", "дискорд"])
     async def discord(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter}, https://discord.gg/pqZ7BSEhJj")
+
+

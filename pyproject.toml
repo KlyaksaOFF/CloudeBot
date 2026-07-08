@@ -9,4 +9,5 @@ dependencies = [
     "dotenv>=0.9.9",
     "ruff>=0.15.20",
     "twitchio>=3.2.2",
+    "websockets>=16.0",
 ]
