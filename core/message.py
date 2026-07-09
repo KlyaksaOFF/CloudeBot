@@ -22,13 +22,13 @@ class MyCommands(commands.Component):
     async def welcome(self, ctx: commands.Context) -> None:
         await ctx.reply(f"Привет {ctx.chatter}!")
 
-    @commands.command(aliases=["рандом"])
+    @commands.command(aliases=["рандом", "случайно"])
     async def random(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter} {random.randint(0, 100)}!")
 
     @commands.command(aliases=["донат", "donats", "донаты", "donat"])
     async def donate(self, ctx: commands.Context) -> None:
-        await ctx.reply("donatex.gg/donate/pingvinius")
+        await ctx.reply(f"{ctx.chatter}, donatex.gg/donate/pingvinius")
 
     @commands.command(aliases=["server", "сервер", "айпи"])
     async def ip(self, ctx: commands.Context) -> None:
@@ -39,10 +39,13 @@ class MyCommands(commands.Component):
 
     @commands.command(aliases=["tg", "тг", "тгк", "телеграм"])
     async def telegram(self, ctx: commands.Context) -> None:
-        await ctx.reply(f"{ctx.chatter}, t.me/cloudertw")
+        await ctx.reply(f"{ctx.chatter}, t.me/pingvinius_228")
 
     @commands.command(aliases=["дс", "disco", "дискорд"])
     async def discord(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter}, discord.gg/pqZ7BSEhJj")
 
-
+    @commands.command(aliases=["закреп"])
+    @commands.cooldown(rate=1, per=60, key=commands.BucketType.chatter)
+    async def pin(self, ctx: commands.Context) -> None:
+        await ctx.reply("Наш тгк: t.me/pingvinius228 - Конкурс/Оповещения о стримах!")

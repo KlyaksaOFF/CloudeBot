@@ -107,7 +107,12 @@ class Bot(commands.AutoBot):
 
         if isinstance(error, commands.CommandNotFound):
             await ctx.reply(
-                f'Команда "{ctx.invoked_with}" не найдена.'
+                f'{ctx.chatter}: Команда "{ctx.invoked_with}" не найдена.'
+            )
+            return
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.reply(
+                f'{ctx.chatter} командой нельзя спамить, подождите {round(error.remaining)} секунд'
             )
             return
 
@@ -129,7 +134,7 @@ class Bot(commands.AutoBot):
             channel = self.create_partialuser(user_id=self.owner_id)
 
             await channel.send_message(
-                f"Привет, @{follower_name} спасибо за фоллоу! 🎉",
+                f"Привет, @{follower_name} спасибо за фоллоу! Наш тгк: t.me/pingvinius_228 🎉",
                 sender=self.user,  # self.user
             )
         except Exception as e:
@@ -139,7 +144,7 @@ class Bot(commands.AutoBot):
         channel_name = payload.broadcaster.name
         started_at = payload.started_at
 
-        print(f"Стрим онлайн!")
+        print("Стрим онлайн!")
 
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
@@ -154,13 +159,13 @@ class Bot(commands.AutoBot):
     async def event_stream_offline(self, payload: twitchio.StreamOffline) -> None:
         channel_name = payload.broadcaster.name
 
-        print(f"Стрим оффлайн!")
+        print("Стрим оффлайн!")
 
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
 
             await channel.send_message(
-                f"{channel_name} оффлайн, все новости в нашем тгк: t.me/cloudertw",
+                f"{channel_name} оффлайн, все новости в нашем тгк: t.me/pingvinius_228",
                 sender=self.user,  # self.user
             )
         except Exception as e:
