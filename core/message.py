@@ -5,9 +5,10 @@ import twitchio
 from twitchio.ext import commands
 
 if TYPE_CHECKING:
-    from .bot import Bot, OWNER_ID
+    from .bot import OWNER_ID, Bot
 
 OWNER_ID = 1393289917
+
 
 class MyCommands(commands.Component):
 

@@ -1,13 +1,13 @@
 import logging
 import os
+from datetime import timedelta
 
 import asqlite
 import twitchio
-from aiohttp import payload
 from dotenv import load_dotenv
 from twitchio import eventsub
 from twitchio.ext import commands, routines
-from datetime import datetime, timedelta
+
 from .message import MyCommands
 
 load_dotenv()
@@ -98,8 +98,6 @@ class Bot(commands.AutoBot):
 
     async def event_ready(self) -> None:
         LOGGER.info("Successfully logged in as: %s", self.bot_id)
-        if not self.periodic_message:
-            self.periodic_message.start()
 
     async def event_command_error(
         self,
@@ -137,7 +135,8 @@ class Bot(commands.AutoBot):
             channel = self.create_partialuser(user_id=self.owner_id)
 
             await channel.send_message(
-                f"Привет, @{follower_name} спасибо за фоллоу! Наш тгк: t.me/pingvinius_228 🎉",
+                message=f"Привет, @{follower_name} спасибо за фоллоу! "
+                        f"Наш тгк: t.me/pingvinius_228 🎉",
                 sender=self.user,  # self.user
             )
         except Exception as e:
@@ -147,35 +146,39 @@ class Bot(commands.AutoBot):
         channel_name = payload.broadcaster.name
         started_at = payload.started_at
 
-        print("Стрим онлайн!")
-
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
 
+            self.periodic_message.start()
             await channel.send_message(
-                f"{channel_name} запустил стрим, время запуска: ({started_at}).",
-                sender=self.user,  # self.user
-            )
+                message=f"{channel_name} запустил стрим, время запуска: ({started_at}).",
+                sender=self.user)
+
+            print('Переодические сообщения запущены')
+            print("Стрим онлайн!")
         except Exception as e:
             print(f"Не удалось отправить сообщение в чат: {e}")
 
     async def event_stream_offline(self, payload: twitchio.StreamOffline) -> None:
         channel_name = payload.broadcaster.name
 
-        print("Стрим оффлайн!")
-
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
 
+            self.periodic_message.stop()
             await channel.send_message(
-                f"{channel_name} оффлайн, все новости в нашем тгк: t.me/pingvinius_228",
-                sender=self.user,  # self.user
-            )
+                message=f"{channel_name} оффлайн, "
+                        f"все новости в нашем тгк: t.me/pingvinius_228",
+                sender=self.user)
+
+            print('Переодические сообщения выключены')
+            print("Стрим оффлайн!")
         except Exception as e:
             print(f"Не удалось отправить сообщение в чат: {e}")
 
-    @routines.routine(delta=timedelta(minutes=5))
+    @routines.routine(delta=timedelta(seconds=10))
     async def periodic_message(self):
         channel = self.create_partialuser(user_id=self.owner_id)
         if channel:
-            await channel.send_message('Текст вашего периодического сообщения!')
+            await channel.send_message(message='Все новости в нашем тгк: t.me/pingvinius_228',
+                                       sender=self.user)
