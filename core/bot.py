@@ -3,10 +3,11 @@ import os
 
 import asqlite
 import twitchio
+from aiohttp import payload
 from dotenv import load_dotenv
 from twitchio import eventsub
-from twitchio.ext import commands
-
+from twitchio.ext import commands, routines
+from datetime import datetime, timedelta
 from .message import MyCommands
 
 load_dotenv()
@@ -170,3 +171,9 @@ class Bot(commands.AutoBot):
             )
         except Exception as e:
             print(f"Не удалось отправить сообщение в чат: {e}")
+
+    @routines.routine(delta=timedelta(minutes=5))
+    async def periodic_message(self):
+        channel = self.create_partialuser(user_id=self.owner_id)
+        if channel:
+            await channel.send_message('Текст вашего периодического сообщения!')
