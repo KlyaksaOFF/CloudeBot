@@ -149,13 +149,16 @@ class Bot(commands.AutoBot):
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
 
-            self.periodic_message.start()
             await channel.send_message(
                 message=f"{channel_name} запустил стрим, время запуска: ({started_at}).",
                 sender=self.user)
-
-            print('Переодические сообщения запущены')
             print("Стрим онлайн!")
+
+            if self.periodic_message._task is None:
+                self.periodic_message.start()
+                print('Переодические сообщения запущены')
+            else:
+                print('Переодические сообщения уже запущены')
         except Exception as e:
             print(f"Не удалось отправить сообщение в чат: {e}")
 
@@ -170,15 +173,20 @@ class Bot(commands.AutoBot):
                 message=f"{channel_name} оффлайн, "
                         f"все новости в нашем тгк: t.me/pingvinius_228",
                 sender=self.user)
-
-            print('Переодические сообщения выключены')
             print("Стрим оффлайн!")
+
+            if self.periodic_message._task is not None:
+                self.periodic_message.stop()
+                print('Переодические сообщения выключены')
+            else:
+                print('Переодические сообщения уже выключены')
+
         except Exception as e:
             print(f"Не удалось отправить сообщение в чат: {e}")
 
-    @routines.routine(delta=timedelta(seconds=10))
+    @routines.routine(delta=timedelta(minutes=5))
     async def periodic_message(self):
         channel = self.create_partialuser(user_id=self.owner_id)
         if channel:
             await channel.send_message(message='Все новости в нашем тгк: t.me/pingvinius_228',
-                                       sender=self.user)
+                                        sender=self.user)
