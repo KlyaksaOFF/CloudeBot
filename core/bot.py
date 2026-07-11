@@ -168,7 +168,6 @@ class Bot(commands.AutoBot):
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
 
-            self.periodic_message.stop()
             await channel.send_message(
                 message=f"{channel_name} оффлайн, "
                         f"все новости в нашем тгк: t.me/pingvinius_228",
@@ -176,7 +175,7 @@ class Bot(commands.AutoBot):
             print("Стрим оффлайн!")
 
             if self.periodic_message._task is not None:
-                self.periodic_message.stop()
+                self.periodic_message.cancel()
                 print('Переодические сообщения выключены')
             else:
                 print('Переодические сообщения уже выключены')
