@@ -5,8 +5,9 @@ import twitchio
 from twitchio.ext import commands
 
 if TYPE_CHECKING:
-    from .bot import Bot
+    from .bot import Bot, OWNER_ID
 
+OWNER_ID = 1393289917
 
 class MyCommands(commands.Component):
 
@@ -60,3 +61,13 @@ class MyCommands(commands.Component):
     @commands.command(aliases=["рб", "rb", "рбник", "друзьярб"])
     async def roblox_friend(self, ctx: commands.Context) -> None:
         await ctx.reply(f"{ctx.chatter}, KlyaksaOFF - ник в роблоксе.")
+
+    @commands.cooldown(rate=1, per=20, key=commands.BucketType.chatter)
+    @commands.command(aliases=["tgsend"])
+    async def tg_send(self, ctx: commands.Context, count: int) -> None:
+        if ctx.author.id == str(OWNER_ID):
+            for i in range(count):
+                await ctx.send("Тгк: t.me/pingvinius_228")
+            return
+        else:
+            return await ctx.reply("У вас нет доступа к данной команде.")
