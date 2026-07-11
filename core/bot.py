@@ -98,6 +98,8 @@ class Bot(commands.AutoBot):
 
     async def event_ready(self) -> None:
         LOGGER.info("Successfully logged in as: %s", self.bot_id)
+        if not self.periodic_message:
+            self.periodic_message.start()
 
     async def event_command_error(
         self,

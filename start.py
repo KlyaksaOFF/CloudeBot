@@ -21,6 +21,7 @@ def main() -> None:
 
                 await bot.start(load_tokens=False)
 
+
     try:
         asyncio.run(runner())
     except KeyboardInterrupt:
