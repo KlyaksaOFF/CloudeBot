@@ -1,21 +1,13 @@
 import logging
-import os
 from datetime import timedelta
 
 import asqlite
 import twitchio
-from dotenv import load_dotenv
 from twitchio import eventsub
 from twitchio.ext import commands, routines
 
+from .data import BOT_ID, CLIENT_ID, CLIENT_SECRET, OWNER_ID
 from .message import MyCommands
-
-load_dotenv()
-
-CLIENT_ID = os.environ.get('CLIENT_ID')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-BOT_ID = os.environ.get('BOT_ID')
-OWNER_ID = os.environ.get('OWNER_ID')
 
 LOGGER: logging.Logger = logging.getLogger("Bot")
 
@@ -144,14 +136,22 @@ class Bot(commands.AutoBot):
 
     async def event_stream_online(self, payload: twitchio.StreamOnline) -> None:
         channel_name = payload.broadcaster.name
-        started_at = payload.started_at
 
         try:
             channel = self.create_partialuser(user_id=self.owner_id)
+            stream = await channel.fetch_channel_info()
 
-            await channel.send_message(
-                message=f"{channel_name} запустил стрим, время запуска: ({started_at}).",
-                sender=self.user)
+            if stream:
+                await channel.send_message(
+                    message=f"{channel_name} запустил стрим! "
+                            f"категория: {stream.game_name}, "
+                            f"название стрима: {stream.title}.",
+                    sender=self.user)
+            else:
+                await channel.send_message(
+                    message=f"{channel_name} запустил стрим!",
+                    sender=self.user)
+                print("Детальная информация о канале не найдена.")
             print("Стрим онлайн!")
 
             if self.periodic_message._task is None:
@@ -159,8 +159,9 @@ class Bot(commands.AutoBot):
                 print('Переодические сообщения запущены')
             else:
                 print('Переодические сообщения уже запущены')
+
         except Exception as e:
-            print(f"Не удалось отправить сообщение в чат: {e}")
+            print(f"Возникла ошибка: {e}")
 
     async def event_stream_offline(self, payload: twitchio.StreamOffline) -> None:
         channel_name = payload.broadcaster.name
@@ -181,9 +182,9 @@ class Bot(commands.AutoBot):
                 print('Переодические сообщения уже выключены')
 
         except Exception as e:
-            print(f"Не удалось отправить сообщение в чат: {e}")
+            print(f"Возникла ошибка: {e}")
 
-    @routines.routine(delta=timedelta(minutes=5))
+    @routines.routine(delta=timedelta(minutes=3))
     async def periodic_message(self):
         channel = self.create_partialuser(user_id=self.owner_id)
         if channel:

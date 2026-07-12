@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 import twitchio
 from twitchio.ext import commands
 
-if TYPE_CHECKING:
-    from .bot import OWNER_ID, Bot
+from .data import OWNER_ID
 
-OWNER_ID = 1393289917
+if TYPE_CHECKING:
+    from .bot import Bot
 
 
 class MyCommands(commands.Component):
