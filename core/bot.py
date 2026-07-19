@@ -6,7 +6,7 @@ import twitchio
 from twitchio import eventsub
 from twitchio.ext import commands, routines
 
-from .data import BOT_ID, CLIENT_ID, CLIENT_SECRET, OWNER_ID
+from .data import BOT_ID, CLIENT_ID, CLIENT_SECRET, OWNER_ID, TELEGRAM
 from .message import MyCommands
 
 LOGGER: logging.Logger = logging.getLogger("Bot")
@@ -128,7 +128,7 @@ class Bot(commands.AutoBot):
 
             await channel.send_message(
                 message=f"Привет, @{follower_name} спасибо за фоллоу! "
-                        f"Наш тгк: t.me/pingvinius_228 🎉",
+                        f"Наш тгк: {TELEGRAM} 🎉",
                 sender=self.user,  # self.user
             )
         except Exception as e:
@@ -171,7 +171,7 @@ class Bot(commands.AutoBot):
 
             await channel.send_message(
                 message=f"{channel_name} оффлайн, "
-                        f"все новости в нашем тгк: t.me/pingvinius_228",
+                        f"все новости в нашем тгк: {TELEGRAM}",
                 sender=self.user)
             print("Стрим оффлайн!")
 
@@ -188,5 +188,5 @@ class Bot(commands.AutoBot):
     async def periodic_message(self):
         channel = self.create_partialuser(user_id=self.owner_id)
         if channel:
-            await channel.send_message(message='Все новости в нашем тгк: t.me/pingvinius_228',
+            await channel.send_message(message=f'Все новости в нашем тгк: {TELEGRAM}',
                                         sender=self.user)
