@@ -108,6 +108,8 @@ class Bot(commands.AutoBot):
                 f'{ctx.chatter} командой нельзя спамить, подождите {round(error.remaining)} секунд'
             )
             return
+        else:
+            await ctx.reply(f'{ctx.chatter} возникла неизвестная ошибка, повторите позже.')
 
         LOGGER.error(
             'Ошибка при выполнении команды "%s":',
@@ -186,7 +188,10 @@ class Bot(commands.AutoBot):
 
     @routines.routine(delta=timedelta(minutes=3))
     async def periodic_message(self):
-        channel = self.create_partialuser(user_id=self.owner_id)
-        if channel:
-            await channel.send_message(message=f'Все новости в нашем тгк: {TELEGRAM}',
-                                        sender=self.user)
+        try:
+            channel = self.create_partialuser(user_id=self.owner_id)
+            if channel:
+                await channel.send_message(message=f'Все новости в нашем тгк: {TELEGRAM}',
+                                            sender=self.user)
+        except Exception as e:
+            print(f"Возникла ошибка {e}")
